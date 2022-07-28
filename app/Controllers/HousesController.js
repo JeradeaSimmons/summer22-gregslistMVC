@@ -1,17 +1,54 @@
+import { ProxyState } from "../AppState.js";
+import { homeService } from "../Services/HomeService.js";
+import { loadState2, saveState2 } from "../Utils/LocalStorage.js";
 
-function _drawHouses(){
-  // GET THE HOUES TEMPLATE
-  document.getElementById('listings').innerHTML = '<p> houses go here </p>'
+
+
+
+function _drawHouses() {
+  // GET THE HOUSE TEMPLATE
+  let template = ''
+  let homes = ProxyState.homes
+  homes.forEach(h => template += h.Template)
+  document.getElementById('listings').innerHTML = template
 }
 
 
 
-export class HousesController{
+export class HousesController {
 
 
 
-  viewHouses(){
+  viewHouses() {
     _drawHouses()
-    // swap out car form with house form
+
   }
+
+
+  createHome() {
+
+
+    window.event.preventDefault()
+    let form = window.event.target
+
+
+    let newHome = {
+      sqfoot: form.sqfoot.value,
+      year: form.year.value,
+      price: form.price.value,
+      img: form.img.value,
+      description: form.description.value,
+    }
+
+    homeService.createHome(newHome)
+    form.reset()
+  }
+
+  deleteHome(id) {
+
+    homeService.deleteHome(id)
+  }
+
+
+
 }
